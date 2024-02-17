@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+    <link rel="stylesheet" href="/static/createprofile.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create A Profile</h1>
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="profilePicture">Profile Picture:</label>
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="age" id="age" name="age" required>
+            </div>
+            <div class="form-group">
+                <label for="type">Type of Traveler:</label>
+                <select id="type" name="type">
+                    <option value="Select">Select</option>
+                    <option value="Group">Group</option>
+                    <option value="Solo">Solo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="purpose">Purpose:</label>
+                <select id="purpose" name="purpose">
+                    <option value="Select">Select</option>
+                    <option value="transportation">Transportation Buddy</option>
+                    <option value="hostel">Hostel/Living Buddy</option>
+                    <option value="travel">Travel Companion</option>
+                </select>
+            </div>
+            <button type="submit">Create Profile</button>
+        </form>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
+
+<script type = "module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+  import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
+  authDomain: "wanderher-2aadc.firebaseapp.com",
+  projectId: "wanderher-2aadc",
+  storageBucket: "wanderher-2aadc.appspot.com",
+  messagingSenderId: "1045363719963",
+  appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
+  measurementId: "G-CVJDD3C5J9"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    
+
+</script>
+

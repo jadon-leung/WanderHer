@@ -1,70 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Profile</title>
-    <link rel="stylesheet" href="/static/createprofile.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Create A Profile</h1>
-        <form id="profileForm">
-            <div class="form-group">
-                <label for="profilePicture">Profile Picture:</label>
-                <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="age">Age:</label>
-                <input type="age" id="age" name="age" required>
-            </div>
-            <div class="form-group">
-                <label for="type">Type of Traveler:</label>
-                <select id="type" name="type">
-                    <option value="Select">Select</option>
-                    <option value="Group">Group</option>
-                    <option value="Solo">Solo</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="purpose">Purpose:</label>
-                <select id="purpose" name="purpose">
-                    <option value="Select">Select</option>
-                    <option value="transportation">Transportation Buddy</option>
-                    <option value="hostel">Hostel/Living Buddy</option>
-                    <option value="travel">Travel Companion</option>
-                </select>
-            </div>
-            <button type="submit">Create Profile</button>
-        </form>
-    </div>
-    
-    <script src="script.js"></script>
-</body>
+<!DOCTYPE html> 
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+        <title>main page</title>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
 </html>
 
-<script type = "module">
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-  import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+<body>
+    <body>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
-  authDomain: "wanderher-2aadc.firebaseapp.com",
-  projectId: "wanderher-2aadc",
-  storageBucket: "wanderher-2aadc.appspot.com",
-  messagingSenderId: "1045363719963",
-  appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
-  measurementId: "G-CVJDD3C5J9"
-};
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-    
-
-</script>
-
+        <div class = "sidebar">
+             <div class="top">
+                 <div class="logo">
+                     <img src = "STUDI logo.png" width = "100px" alt = "STUDI logo">
+                 </div>
+                 <i class = "bx bx-menu" id = "btn"></i>
+             </div>
+             <div class="user">
+                 <img src = "user-regular-24.png" alt = "me" class = "user img">
+                 <div>
+                     <p class = "bold">Jadon</p>
+                     <p>Admin</p>
+                 </div>
+             </div>
+             <ul>
+                 
+                 <li>
+                     <a href = "#">
+                         <i class = "bx bxs-grid-alt"></i>
+                         <span class = "nav-item">Dashboard</span>
+                     </a>
+                     <span class = "tooltip">Dashboard</span>
+                 </li>
+                 <li>
+                     <a href = "/templates/study.html">
+                         <i class = "bx bx-book-open"></i>
+                         <span class = "nav-item">Study</span>
+                     </a>
+                     <span class = "tooltip">Study</span>
+                 </li>
+                 <li>
+                     <a href = "#">
+                         <i class = "bx bx-chat"></i>
+                         <span class = "nav-item">Friends</span>
+                     </a>
+                     <span class = "tooltip">Friends</span>
+                 </li>
+                 <li>
+                     <a onclick = "logout()" href = "#">
+                         <i class = "bx bx-log-out"></i>
+                         <span class = "nav-item">Logout</span>
+                     </a>
+                     <span class = "tooltip">Logout</span>
+                 </li>
+                
+             </ul>
+        </div>
+        
+         <div class = "main-content">
+             <header>
+                 <div class="navbar">
+                     <div class="logo"><a href="/templates/index.html">STUDI</a></div>
+                 </div>
+            </header>
+       
+             
+             <div class="popup">
+                 <form  id = "myForm">
+                     <div class="close-btn">&times;</div>
+                     <div class="form">
+                         <h2>Host Session</h2>
+                         <div class="form-element">
+                             <label form = "class">Class</label>
+                             <input type = "text" id = "class" placeholder = "Enter Class" autocomplete = "off">
+                         </div>
+                         <div class="form-element">
+                             <label form = "location">Location</label>
+                             <input type = "location" id = "location" placeholder = "Enter Location" autocomplete = "off">
+                         </div>
+                         <div class="form-element">
+                             <label class = "switch">
+                                 <input type = "checkbox">
+                                 <span class = "slider round"></span>
+                                 <p>Private</p>
+                             </label>
+                         </div>
+                         <div class="form-element">
+                             <!--<button>Start</button> -->
+                             <div class="bots">
+                                 <input id = "start-button" type = "submit" value = "Start">
+                             </div>
+                         </div>
+                     </div>
+                 </form>
+             </div>
+        </div>
+     
+         
+     </body>
+     
+     <script type = "module">
+         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+         import { getDatabase, set, ref, update, push } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+     
+         const firebaseConfig = {
+             apiKey: "AIzaSyAQ1j9ImVzvO7w_V3jc0KznSV52c4ssJ5g",
+             authDomain: "studi-31486.firebaseapp.com",
+             databaseURL: "https://studi-31486-default-rtdb.firebaseio.com",
+             projectId: "studi-31486",
+             storageBucket: "studi-31486.appspot.com",
+             messagingSenderId: "919376410608",
+             appId: "1:919376410608:web:40c513b7bdee38fcb24f35",
+             measurementId: "G-JGVEH7P7CP"
+         };
+     
+         const app = initializeApp(firebaseConfig);
+         const database = getDatabase(app);
+         const auth = getAuth(app);
+         let btn = document.querySelector('#btn');
+         let sidebar = document.querySelector('.sidebar');
+         let start_button = document.querySelector('#start-button');
+         document.querySelector("#show-host").addEventListener("click", function(){
+             document.querySelector(".popup").classList.add("active");
+         });
+         document.querySelector("#start-button").addEventListener("click", function(){
+             document.querySelector(".popup").classList.remove('active');
+         });
+         document.querySelector(".close-btn").addEventListener("click", function(){
+             document.querySelector(".popup").classList.remove("active");
+         });
+       
+         btn.onclick = function(){
+             console.log('Sidebar toggle clicked'); // Debugging line
+     
+             sidebar.classList.toggle('active');
+         
+         };
+     
+     
+         document.addEventListener('DOMContentLoaded', function() {
+       // Listen for form submission
+       document.getElementById('myForm').addEventListener('submit', function(e) {
+         e.preventDefault();
+     
+         // Ensure Firebase database is initialized and 'database' is defined
+        
+         const sessionRef = ref(database, 'Sessions');
+        
+     
+         // Get values from inputs
+         var className = document.getElementById('class').value;
+         var userLocation = document.getElementById('location').value;
+         var isPrivate = document.querySelector('.switch input[type="checkbox"]').checked;
+     
+         // Create an object for this data
+         var formData = {
+           class: className,
+           location: userLocation,
+           isPrivate: isPrivate  // Renamed to avoid using 'private'
+         };
+         document.getElementById('class').value = "";
+         document.getElementById('location').value = "";
+         
+     
+         set(push(sessionRef), formData)
+             .then(() => {
+                 console.log("Session saved successfully.");
+                 // Optional: Provide user feedback or redirection here
+             })
+             .catch((error) => {
+                 console.error("Data could not be saved." + error);
+             });
+     
+       });
+     });
+     function logout(){
+             
+             signOut(auth).then(() => {
+                             window.location.href = "/templates/home.html";
+     
+         }).catch((error) => {
+                             const errorCode = error.code;
+                             const errorMessage = error.message;
+                             alert(errorMessage);
+             });
+      
+         }
+         window.logout = logout; 
+         
+       
+     
+        
+         </script>
+         
+     
+     
+     </html>
+</body>
