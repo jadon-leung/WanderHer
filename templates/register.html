@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderHer</title>
+    <link rel="stylesheet" href="/static/menu.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="nav-container">
+        <div class="navbar">
+            <h1 id = 'navbar-logo'>WanderHer</h1>
+            <div class="menu-toggle" id = "mobile-menu">
+                <span class = "bar"></span>
+                <span class = "bar"></span>
+                <span class = "bar"></span>
+            </div>
+            <ul class = "nav-menu">
+                <li><a href = "/templates/home.html" class = "nav-links">Home</a></li>
+                <li><a href = "/templates/about.html" class = "nav-links">About Us</a></li>
+                <li><a href = "/templates/login.html" class = "nav-links">Log In</a></li>
+                <li><a href = "/templates/register.html" class = "nav-links">Register</a></li>
+            </ul>
+            
+        </div>
+    </div>
+    
+    <div class="popup">
+        <form  id = "myForm">
+            <div class="form">
+                <h2>Register</h2>
+                <div class="form-element">
+                    <label form = "email">Email</label>
+                    <input type = "text" id = "email" name = "email" placeholder = "Enter Email" autocomplete = "off">
+                </div>
+                <div class="form-element">
+                    <label form = "password">Password</label>
+                    <input type = "password" id = "myPassword"  name = "password"  placeholder = "Enter Password" autocomplete = "off">
+                </div>
+                <div class="form-element">
+                    
+                    <div class="check">
+                        <input class ="checkbox" type="checkbox" name = "checkbox" onclick = "myFunction()"> Show Password
+                    </div>
+                     
+                </div>
+                <div class="form-element">
+                    <!--<button>Start</button> -->  
+                    <div class="bots">
+                        <input id = "signUp" type = "submit" name = "signup_submit" value = "Sign Up">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+
+<script type = "module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
+  authDomain: "wanderher-2aadc.firebaseapp.com",
+  projectId: "wanderher-2aadc",
+  storageBucket: "wanderher-2aadc.appspot.com",
+  messagingSenderId: "1045363719963",
+  appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
+  measurementId: "G-CVJDD3C5J9"
+};
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+    
+    window.myFunction = function() {
+        var x = document.getElementById("myPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+    }
+
+        document.getElementById('signUp').addEventListener('click', (e) => {
+            e.preventDefault();
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('myPassword').value;
+
+            createUserWithEmailAndPassword( auth, email, password)
+                .then((userCredential) => {
+                    // const user = userCredential.user;
+                    const user = userCredential.user;
+
+                    set(ref(database, 'users/' + user.uid) , {
+                        email: email
+                    })
+                    .then(() => {
+                        window.location.href = '/templates/home.html'; 
+
+                    })
+                    
+
+
+                })
+                .catch((error) => {
+                    console.error('Error setting user data in database:', error); // Debugging line
+                    alert(error.message); // Display actual error message
+      
+                });
+
+        });
+        
+        
+
+
+</script>
+
+</html>

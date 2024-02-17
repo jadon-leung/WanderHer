@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDI Web App</title>
+    <link rel="stylesheet" href="/static/menu.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="nav-container">
+        <div class="navbar">
+            <h1 id = 'navbar-logo'>STUDI</h1>
+            <div class="menu-toggle" id = "mobile-menu">
+                <span class = "bar"></span>
+                <span class = "bar"></span>
+                <span class = "bar"></span>
+            </div>
+            <ul class = "nav-menu">
+                <li><a href = "/templates/home.html" class = "nav-links">Home</a></li>
+                <li><a href = "/templates/about.html" class = "nav-links">About Us</a></li>
+                <li><a href = "/templates/login.html" class = "nav-links">Log In</a></li>
+                <li><a href = "/templates/register.html" class = "nav-links">Register</a></li>
+            </ul>
+            
+        </div>
+    </div>
+    
+    <div class="popup">
+        <form  id = "myForm">
+            <!-- <div class="close-btn">&times;</div> -->
+            <div class="form">
+                <h2>Log In</h2>
+                <div class="form-element">
+                    <label form = "email">Email</label>
+                    <input type = "text" id = "email" placeholder = "Enter Email" autocomplete = "off">
+                </div>
+                <div class="form-element">
+                    <label form = "password">Password</label>
+                    <input type = "password" id = "myPassword"  placeholder = "Enter Password" autocomplete = "off">
+                </div>
+                <div class="form-element">
+                    <!-- <label class = "switch">
+                         <input type = "checkbox">
+                        <span class = "slider round"></span>
+                        <p>Private</p> 
+                        
+                    </label> -->
+                    <div class="check">
+                        <input class ="checkbox" type="checkbox" onclick = "myFunction()"> Show Password
+                    </div>
+                     
+                </div>
+                <div class="form-element">
+                    <!--<button>Start</button> -->  
+                    <div class="bots">
+                        <input id = "login" type = "submit" name = "login" value = "Log In">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+</body>
+
+<script type = "module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+    import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+    
+    const firebaseConfig = {
+  apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
+  authDomain: "wanderher-2aadc.firebaseapp.com",
+  projectId: "wanderher-2aadc",
+  storageBucket: "wanderher-2aadc.appspot.com",
+  messagingSenderId: "1045363719963",
+  appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
+  measurementId: "G-CVJDD3C5J9"
+};
+    
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+        
+        window.myFunction = function() {
+            var x = document.getElementById("myPassword");
+                if (x.type === "password") {
+                    x.type = "text";
+                } else {
+                    x.type = "password";
+                }
+        }
+    
+            document.getElementById('login').addEventListener('click', (e) => {
+                e.preventDefault();
+                var email = document.getElementById('email').value;
+                var password = document.getElementById('myPassword').value;
+    
+                signInWithEmailAndPassword(auth, email, password)
+                    .then((userCredential) => {
+                        // Signed in 
+                        const user = userCredential.user;
+                        
+                        const dt = new Date();
+                        update(ref(database, 'users/' + user.uid) , {
+                            last_login: dt,
+                        })
+                        
+                        // ...
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        alert(errorMessage);
+                    });
+    
+            });
+
+            const user = auth.currentUser;
+            onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/auth.user
+                const uid = user.uid;
+                // ...
+                window.location.href = '/templates/index.html';
+
+            }else {
+                // User is signed out
+                // ...  
+            }
+            });
+            
+    
+    </script>
+
+</html>
