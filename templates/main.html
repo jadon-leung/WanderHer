@@ -1,0 +1,203 @@
+<!DOCTYPE html> 
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+        <title>main page</title>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+</html>
+
+<body>
+    <body>
+
+        <div class = "sidebar">
+             <div class="top">
+                 <div class="logo">
+                     <img src = "STUDI logo.png" width = "100px" alt = "STUDI logo">
+                 </div>
+                 <i class = "bx bx-menu" id = "btn"></i>
+             </div>
+             <div class="user">
+                 <img src = "user-regular-24.png" alt = "me" class = "user img">
+                 <div>
+                     <p class = "bold">Jadon</p>
+                     <p>Admin</p>
+                 </div>
+             </div>
+             <ul>
+                 
+                 <li>
+                     <a href = "#">
+                         <i class = "bx bxs-grid-alt"></i>
+                         <span class = "nav-item">Dashboard</span>
+                     </a>
+                     <span class = "tooltip">Dashboard</span>
+                 </li>
+                 <li>
+                     <a href = "/templates/study.html">
+                         <i class = "bx bx-book-open"></i>
+                         <span class = "nav-item">Study</span>
+                     </a>
+                     <span class = "tooltip">Study</span>
+                 </li>
+                 <li>
+                     <a href = "#">
+                         <i class = "bx bx-chat"></i>
+                         <span class = "nav-item">Friends</span>
+                     </a>
+                     <span class = "tooltip">Friends</span>
+                 </li>
+                 <li>
+                     <a onclick = "logout()" href = "#">
+                         <i class = "bx bx-log-out"></i>
+                         <span class = "nav-item">Logout</span>
+                     </a>
+                     <span class = "tooltip">Logout</span>
+                 </li>
+                
+             </ul>
+        </div>
+        
+         <div class = "main-content">
+             <header>
+                 <div class="navbar">
+                     <div class="logo"><a href="/templates/index.html">STUDI</a></div>
+                 </div>
+            </header>
+       
+             
+             <div class="popup">
+                 <form  id = "myForm">
+                     <div class="close-btn">&times;</div>
+                     <div class="form">
+                         <h2>Host Session</h2>
+                         <div class="form-element">
+                             <label form = "class">Class</label>
+                             <input type = "text" id = "class" placeholder = "Enter Class" autocomplete = "off">
+                         </div>
+                         <div class="form-element">
+                             <label form = "location">Location</label>
+                             <input type = "location" id = "location" placeholder = "Enter Location" autocomplete = "off">
+                         </div>
+                         <div class="form-element">
+                             <label class = "switch">
+                                 <input type = "checkbox">
+                                 <span class = "slider round"></span>
+                                 <p>Private</p>
+                             </label>
+                         </div>
+                         <div class="form-element">
+                             <!--<button>Start</button> -->
+                             <div class="bots">
+                                 <input id = "start-button" type = "submit" value = "Start">
+                             </div>
+                         </div>
+                     </div>
+                 </form>
+             </div>
+        </div>
+     
+         
+     </body>
+     
+     <script type = "module">
+         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+         import { getDatabase, set, ref, update, push } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+     
+         const firebaseConfig = {
+             apiKey: "AIzaSyAQ1j9ImVzvO7w_V3jc0KznSV52c4ssJ5g",
+             authDomain: "studi-31486.firebaseapp.com",
+             databaseURL: "https://studi-31486-default-rtdb.firebaseio.com",
+             projectId: "studi-31486",
+             storageBucket: "studi-31486.appspot.com",
+             messagingSenderId: "919376410608",
+             appId: "1:919376410608:web:40c513b7bdee38fcb24f35",
+             measurementId: "G-JGVEH7P7CP"
+         };
+     
+         const app = initializeApp(firebaseConfig);
+         const database = getDatabase(app);
+         const auth = getAuth(app);
+         let btn = document.querySelector('#btn');
+         let sidebar = document.querySelector('.sidebar');
+         let start_button = document.querySelector('#start-button');
+         document.querySelector("#show-host").addEventListener("click", function(){
+             document.querySelector(".popup").classList.add("active");
+         });
+         document.querySelector("#start-button").addEventListener("click", function(){
+             document.querySelector(".popup").classList.remove('active');
+         });
+         document.querySelector(".close-btn").addEventListener("click", function(){
+             document.querySelector(".popup").classList.remove("active");
+         });
+       
+         btn.onclick = function(){
+             console.log('Sidebar toggle clicked'); // Debugging line
+     
+             sidebar.classList.toggle('active');
+         
+         };
+     
+     
+         document.addEventListener('DOMContentLoaded', function() {
+       // Listen for form submission
+       document.getElementById('myForm').addEventListener('submit', function(e) {
+         e.preventDefault();
+     
+         // Ensure Firebase database is initialized and 'database' is defined
+        
+         const sessionRef = ref(database, 'Sessions');
+        
+     
+         // Get values from inputs
+         var className = document.getElementById('class').value;
+         var userLocation = document.getElementById('location').value;
+         var isPrivate = document.querySelector('.switch input[type="checkbox"]').checked;
+     
+         // Create an object for this data
+         var formData = {
+           class: className,
+           location: userLocation,
+           isPrivate: isPrivate  // Renamed to avoid using 'private'
+         };
+         document.getElementById('class').value = "";
+         document.getElementById('location').value = "";
+         
+     
+         set(push(sessionRef), formData)
+             .then(() => {
+                 console.log("Session saved successfully.");
+                 // Optional: Provide user feedback or redirection here
+             })
+             .catch((error) => {
+                 console.error("Data could not be saved." + error);
+             });
+     
+       });
+     });
+     function logout(){
+             
+             signOut(auth).then(() => {
+                             window.location.href = "/templates/home.html";
+     
+         }).catch((error) => {
+                             const errorCode = error.code;
+                             const errorMessage = error.message;
+                             alert(errorMessage);
+             });
+      
+         }
+         window.logout = logout; 
+         
+       
+     
+        
+         </script>
+         
+     
+     
+     </html>
+</body>
