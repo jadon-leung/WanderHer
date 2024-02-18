@@ -22,16 +22,16 @@
              <div class="user">
                  <img src = "user-regular-24.png" alt = "me" class = "user img">
                  <div>
-                     <p class = "bold">Jadon</p>
+                     <p id = 'username' class = "bold"></p>
                      <p>Admin</p>
                  </div>
              </div>
              <ul>
                  
                  <li>
-                     <a href = "#">
+                     <a href = "/templates/profile.html">
                          <i class = "bx bxs-grid-alt"></i>
-                         <span class = "nav-item">Dashboard</span>
+                         <span class = "nav-item">Profile</span>
                      </a>
                      <span class = "tooltip">Dashboard</span>
                  </li>
@@ -50,7 +50,7 @@
                      <span class = "tooltip">Friends</span>
                  </li>
                  <li>
-                     <a onclick = "logout()" href = "#">
+                     <a onclick = "logout()">
                          <i class = "bx bx-log-out"></i>
                          <span class = "nav-item">Logout</span>
                      </a>
@@ -93,26 +93,11 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-        
-        
-        
-
-                     <div class="logo"><a href="/templates/index.html">STUDI</a></div>
-                 </div>
-            </header>
-       
-             
-
-             
-     
-
-     </body>
      
      <script type = "module">
          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
          import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-         import { getDatabase, set, ref, update, push } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+         import { getDatabase, set, ref, update, push, child } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
      
          const firebaseConfig = {
              apiKey: "AIzaSyAQ1j9ImVzvO7w_V3jc0KznSV52c4ssJ5g",
@@ -128,19 +113,9 @@
          const app = initializeApp(firebaseConfig);
          const database = getDatabase(app);
          const auth = getAuth(app);
+         const user = auth.currentUser;
          let btn = document.querySelector('#btn');
-         let sidebar = document.querySelector('.sidebar');
-         let start_button = document.querySelector('#start-button');
-         document.querySelector("#show-host").addEventListener("click", function(){
-             document.querySelector(".popup").classList.add("active");
-         });
-         document.querySelector("#start-button").addEventListener("click", function(){
-             document.querySelector(".popup").classList.remove('active');
-         });
-         document.querySelector(".close-btn").addEventListener("click", function(){
-             document.querySelector(".popup").classList.remove("active");
-         });
-       
+         let sidebar = document.querySelector('.sidebar'); 
          btn.onclick = function(){
              console.log('Sidebar toggle clicked'); // Debugging line
      
@@ -148,6 +123,45 @@
          
          };
      
+         if (user) {
+            
+            const uid = user.uid;
+            const nameRef = ref(database, `users/${uid}/name`);
+      
+        get(nameRef).then((snapshot) => {
+            if (snapshot.exists()) {
+            const name = snapshot.val();
+            // Now that we have the name, insert it into the HTML
+            document.getElementById('username').innerHTML = `<p>${name}</p>`;
+            } else {
+            console.log("No name available.");
+            }
+        }).catch((error) => {
+            console.error("Failed to fetch user name:", error);
+        });
+        } else {
+        console.log("No user is signed in.");
+        }
+        function fetchProfiles() {
+            const dbRef = ref(database);
+            get(child(dbRef, `profiles`)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const profilesArray = [];
+                    snapshot.forEach(childSnapshot => {
+                        const profile = childSnapshot.val();
+                        profile.id = childSnapshot.key; // Optionally store the profile's key if needed
+                        profilesArray.push(profile);
+                    });
+                    console.log(profilesArray); // For debugging: Log the array of profiles
+                    // You can now use profilesArray as needed in your application
+                } else {
+                    console.log("No profiles available");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+        //fetchProfiles();
      
          document.addEventListener('DOMContentLoaded', function() {
        // Listen for form submission
@@ -160,18 +174,6 @@
         
      
          // Get values from inputs
-         var className = document.getElementById('class').value;
-         var userLocation = document.getElementById('location').value;
-         var isPrivate = document.querySelector('.switch input[type="checkbox"]').checked;
-     
-         // Create an object for this data
-         var formData = {
-           class: className,
-           location: userLocation,
-           isPrivate: isPrivate  // Renamed to avoid using 'private'
-         };
-         document.getElementById('class').value = "";
-         document.getElementById('location').value = "";
          
      
          set(push(sessionRef), formData)
@@ -185,6 +187,8 @@
      
        });
      });
+    
+
      function logout(){
              
              signOut(auth).then(() => {
