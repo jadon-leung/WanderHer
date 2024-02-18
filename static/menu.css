@@ -1,10 +1,11 @@
-@import url(https://fonts.googleapis.com/css?family=Cabin+Condensed);
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,700,800&display=swap');
+
 
 *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family:'Nunito-Sans', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Nunito Sans', sans-serif;
 }
 .nav-container{
     width: 100%;
@@ -64,7 +65,7 @@
     border-radius: 8px;
     transition: background-color 0.3s;
     text-decoration: none; /* Remove underline from a element */
-    border: 2px solid #5274CB;
+    border: 2px solid #AD7377;
     background-color: rgb(255, 255, 255); 
   }
 
@@ -82,16 +83,18 @@
     border-radius: 8px;
     transition: background-color 0.3s;
     text-decoration: none; /* Remove underline from a element */
-    border: 2px solid #5274CB;
-    background-color: #5274CB;
+    border: 2px solid #AD7377;
+    background-color: #AD7377;
   }
 
   .register-button:hover {
     background-color: #f7f7f7;
   }
 
+
+
 #navbar-logo{
-    color: #5274CB;
+    color: #AD7377;
     justify-self: start;
     margin-left: 20px;  
 
@@ -119,15 +122,15 @@
 
 
 #home-link { 
-    color: #5174CB; 
+    color: #434242; 
 }
 
 #about-link { 
-    color: #5174CB; 
+    color: #434242; 
 }
 
 #login-link { 
-    color: #5174CB; 
+    color: #AD7377; 
 }
 
 #register-link { 
@@ -141,13 +144,25 @@
     text-align: center;
     width: 70%;
     justify-self: end;
-    gap: 10px;
+}
+
+
+.nav-menu li {
+    margin-right: 5px; /* Adds 20 pixels space to the right of each navigation item */
+}
+
+/* You may want to remove the margin for the last item to avoid unnecessary spacing on the right edge */
+.nav-menu li:last-child {
+    margin-right: 0;
 }
 
 .nav-links{
     color: white;
     text-decoration: none;
+    gap: 100px;
 }
+
+
 
 .nav-links:hover{
     cursor: pointer;
@@ -157,11 +172,11 @@
 
 .banner {
     display: flex;
-    justify-content: flex; /* Center horizontally */
+    justify-content: flex-start; /* Center horizontally */
     align-items: center; /* Center vertically */
     width: 100%;
-    height: 50vh; /* Covers the first half of the viewport */
-    background-color: #C17993; /* Or any other color you wish to use */
+    height: 100%; /* Covers the first half of the viewport */
+    background-color: #F5C6D7; /* Or any other color you wish to use */
     position: relative;
     z-index: 1;
     padding-left: 80px;
@@ -169,10 +184,10 @@
 
 .banner-text {
     color: #FFFFFF; /* Adjust the color as needed */
-    font-size: 30px; /* Adjust the size as needed */
+    font-size: 35px; /* Adjust the size as needed */
     margin: 0; /* Ensures there's no default margin affecting the centering */
-    width: 30%;
-    text-align: center;
+    width: 70%;
+    margin-left: 95px;
 }
 
 .banner-content {
@@ -190,12 +205,46 @@
     border-radius: 8px;
     transition: background-color 0.3s;
     text-decoration: none; /* Remove underline from a element */
-    border: 2px solid #ffffff;
-    background-color: #C17993; 
+    border: 2px solid #AD7377;
+    background-color: #AD7377; 
     color: #ffffff;
     margin-top: 70px;
     margin-left: 95px;
   }
+
+  .main-heading {
+    font-size: 48px; /* Adjust the size as needed */
+    color: rgb(255, 255, 255); /* This is a dark color, replace with the color you want */
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 40px; /* Adds space below the heading */
+    margin-left: 95px;
+}
+
+/* Style for the subheading */
+.sub-heading {
+    font-size: 36px; /* Adjust the size as needed */
+    color: rgb(255, 255, 255); /* This is a lighter color, replace with the color you want */
+    font-weight: normal;
+    margin-bottom: 40px; /* Adds space below the subheading */
+    margin-left: 95px;
+}
+
+/* Style for the body text */
+.body-text {
+    font-size: 20px; /* Adjust the size as needed */
+    color: rgb(255, 255, 255); /* This is a grey color, replace with the color you want */
+    line-height: 1.6; /* Adjusts the line spacing */
+    margin-bottom: 40px; /* Adds space below the paragraph */
+    margin-left: 95px;
+}
+
+  .bottom-right-image {
+    position: absolute;
+    bottom: 0;
+    right: 10%;
+    z-index: 10;
+}
 
 
 @media screen and (max-width: 768px){
