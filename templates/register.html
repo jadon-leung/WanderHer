@@ -103,6 +103,17 @@ const firebaseConfig = {
                         email: email
                     })
                     .then(() => {
+                        signOut(auth).then(() => {
+                             window.location.href = "/templates/home.html";
+     
+                        }).catch((error) => {
+                                            const errorCode = error.code;
+                                            const errorMessage = error.message;
+                                            alert(errorMessage);
+                            });
+      
+         
+                        window.logout = logout; 
                         window.location.href = '/templates/home.html'; 
 
                     })
