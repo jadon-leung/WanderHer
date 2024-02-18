@@ -12,7 +12,8 @@
         <form id="profileForm">
             <div class="form-group">
                 <label for="profilePicture">Profile Picture:</label>
-                <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+                <input type="file" id="profilePicture" onchange = "getFile(event)" class = "inputFile" name="profilePicture" accept="image/*">
+                <span class = "fileText"></span>
             </div>
             <div class="form-group">
                 <label for="name">Name:</label>
@@ -39,32 +40,78 @@
                     <option value="travel">Travel Companion</option>
                 </select>
             </div>
-            <button type="submit">Create Profile</button>
+
+            
+
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio" rows="4" cols="50"></textarea>
+            </div>
+            <button id = "submitProfile" type="submit">Create Profile</button>
+            <button id="submitProfile" type="submit">Create Profile</button>
         </form>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
+            authDomain: "wanderher-2aadc.firebaseapp.com",
+            databaseURL: "https://wanderher-2aadc-default-rtdb.firebaseio.com",
+            projectId: "wanderher-2aadc",
+            storageBucket: "wanderher-2aadc.appspot.com",
+            messagingSenderId: "1045363719963",
+            appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
+            measurementId: "G-CVJDD3C5J9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
+
+        document.getElementById('submitProfile').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+
+            if (!user) {
+                console.log("No user is signed in.");
+                return;
+            }
+
+            const fileItem = document.getElementById('profilePicture').files[0];
+            if (!fileItem) {
+                alert("No file selected!");
+                return;
+            }
+
+            const fileName = fileItem.name;
+            const storageReference = storageRef(storage, `images/${user.uid}/${fileName}`);
+
+            try {
+                const snapshot = await uploadBytes(storageReference, fileItem);
+                const url = await getDownloadURL(snapshot.ref);
+
+                const profileData = {
+                    name: document.getElementById('name').value,
+                    age: document.getElementById('age').value,
+                    typeOfTraveler: document.getElementById('type').value,
+                    purpose: document.getElementById('purpose').value,
+                    bio: document.getElementById('bio').value,
+                    profilePictureUrl: url
+                };
+
+                await set(ref(database, `users/${user.uid}`), profileData);
+                console.log("Profile saved successfully.");
+            } catch (error) {
+                console.error("Error: ", error);
+            }
+        });
+    </script>
 </body>
 </html>
-
-<script type = "module">
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-  import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
-  authDomain: "wanderher-2aadc.firebaseapp.com",
-  projectId: "wanderher-2aadc",
-  storageBucket: "wanderher-2aadc.appspot.com",
-  messagingSenderId: "1045363719963",
-  appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
-  measurementId: "G-CVJDD3C5J9"
-};
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-    
-
-</script>
-
