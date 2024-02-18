@@ -1,9 +1,18 @@
 
+<!DOCTYPE html> 
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+        <title>main page</title>
+        <link rel = "stylesheet" href = "/static/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+</html>
+
 
 <body>
-    <body>
-
-        <div class = "sidebar">
+  <div class = "sidebar">
              <div class="top">
                  <div class="logo">
                      <img src = "STUDI logo.png" width = "100px" alt = "STUDI logo">
@@ -50,47 +59,54 @@
                 
              </ul>
         </div>
-        
-         <div class = "main-content">
+   <div class = "main-content">
              <header>
                  <div class="navbar">
+
+                     <div class="logo"><a href="/templates/index.html">WanderHer</a></div>
+                 </div>
+            </header>
+       
+            <!--editing rn-->
+
+            <div class="match-container">
+                <div class="profile">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg" alt="Profile Picture">
+                    
+                    <div class="description">
+                        <div class="name-and-age">
+                        <h3>Jane Doe</h3>
+                        <p>(25)</p>
+                    </div>
+                        <p>Type of Traveler: Solo</p>
+                        <p>Purpose: Travel Companion</p>
+                        <p>Description...</p>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-button dislike"><i class="bx bx-x"></i></button>
+                        <button class="action-button like"><i class="bx bx-check"></i></button>
+                    </div>
+                </div>
+            </div>
+   
+    
+    <script src="script.js"></script>
+</body>
+</html>
+
+        
+        
+        
+
                      <div class="logo"><a href="/templates/index.html">STUDI</a></div>
                  </div>
             </header>
        
              
-             <div class="popup">
-                 <form  id = "myForm">
-                     <div class="close-btn">&times;</div>
-                     <div class="form">
-                         <h2>Host Session</h2>
-                         <div class="form-element">
-                             <label form = "class">Class</label>
-                             <input type = "text" id = "class" placeholder = "Enter Class" autocomplete = "off">
-                         </div>
-                         <div class="form-element">
-                             <label form = "location">Location</label>
-                             <input type = "location" id = "location" placeholder = "Enter Location" autocomplete = "off">
-                         </div>
-                         <div class="form-element">
-                             <label class = "switch">
-                                 <input type = "checkbox">
-                                 <span class = "slider round"></span>
-                                 <p>Private</p>
-                             </label>
-                         </div>
-                         <div class="form-element">
-                             <!--<button>Start</button> -->
-                             <div class="bots">
-                                 <input id = "start-button" type = "submit" value = "Start">
-                             </div>
-                         </div>
-                     </div>
-                 </form>
-             </div>
-        </div>
+
+             
      
-         
+
      </body>
      
      <script type = "module">
@@ -191,4 +207,6 @@
      
      
      </html>
+
 </body>
+
