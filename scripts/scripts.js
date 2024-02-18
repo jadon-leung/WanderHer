@@ -1,11 +1,13 @@
 document.getElementById('profileForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent form submission
+    src="https://www.gstatic.com/firebasejs/10.7.2/firebase-storage.js";
 
     // Get form values
     var name = document.getElementById('name').value;
     var age = document.getElementById('age').value;
     var type = document.getElementById('type').value;
     var purpose = document.getElementById('purpose').value;
+    var bio = document.getElementById('bio').value;
 
     // Get the file input element
     var fileInput = document.getElementById('profilePicture');
@@ -22,6 +24,7 @@ document.getElementById('profileForm').addEventListener('submit', function(event
     console.log("Age:", age);
     console.log("Type of Traveler:", type);
     console.log("Purpose:", purpose);
+    console.log("Bio:", bio);
     console.log("Profile Picture:", profilePicture);
 
     // You can make an AJAX request here to send the form data and profile picture to a server
@@ -32,6 +35,7 @@ document.getElementById('profileForm').addEventListener('submit', function(event
     formData.append('age', age);
     formData.append('type', type);
     formData.append('purpose', purpose);
+    formData.append('bio', bio);
     formData.append('profilePicture', profilePicture);
 
     fetch('https://example.com/api/create-profile', {
