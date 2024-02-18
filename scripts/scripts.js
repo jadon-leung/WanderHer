@@ -1,5 +1,6 @@
 document.getElementById('profileForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Prevent form submission
+    src="https://www.gstatic.com/firebasejs/10.7.2/firebase-storage.js";
 
     // Get form values
     var name = document.getElementById('name').value;

@@ -13,7 +13,8 @@
         <form id="profileForm">
             <div class="form-group">
                 <label for="profilePicture">Profile Picture:</label>
-                <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+                <input type="file" id="profilePicture" onchange = "getFile(event)" class = "inputFile" name="profilePicture" accept="image/*">
+                <span class = "fileText"></span>
             </div>
             <div class="form-group">
                 <label for="name">Name:</label>
@@ -40,47 +41,89 @@
                     <option value="travel">Travel Companion</option>
                 </select>
             </div>
+
+            
+
             <div class="form-group">
                 <label for="bio">Bio:</label>
                 <textarea id="bio" name="bio" rows="4" cols="50"></textarea>
             </div>
-            <button type="submit">Create Profile</button>
+            <button id = "submitProfile" type="submit">Create Profile</button>
+
         </form>
     </div>
     
     <script src="script.js"></script>
 </body>
 
-<!DOCTYPE html> 
-<html lang = "en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
-        <title>main page</title>
-        <link rel = "stylesheet" href = "/static/style.css">
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    </head>
 
-</html>
 
-<script type = "module">
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
-  import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+    import { getDatabase, set, ref, push } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+    import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-storage.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
-  authDomain: "wanderher-2aadc.firebaseapp.com",
-  projectId: "wanderher-2aadc",
-  storageBucket: "wanderher-2aadc.appspot.com",
-  messagingSenderId: "1045363719963",
-  appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
-  measurementId: "G-CVJDD3C5J9"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyCtWqmpsRLy0nbWbO78SbuNVxiED4wXvBo",
+        authDomain: "wanderher-2aadc.firebaseapp.com",
+        databaseURL: "https://wanderher-2aadc-default-rtdb.firebaseio.com",
+        projectId: "wanderher-2aadc",
+        storageBucket: "wanderher-2aadc.appspot.com",
+        messagingSenderId: "1045363719963",
+        appId: "1:1045363719963:web:30ff22bee2fc675e275dbe",
+        measurementId: "G-CVJDD3C5J9"
+    };
 
     const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
     const database = getDatabase(app);
     
+    // Move the form data retrieval inside the click event listener to capture the current form values
+    document.getElementById('submitProfile').addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Retrieving form values when the form is actually submitted
+        var name = document.getElementById('name').value;
+        var age = document.getElementById('age').value;
+        var typeOfTraveler = document.getElementById('type').value;
+        var purpose = document.getElementById('purpose').value;
+        
+        var fileText = document.querySelector(".fileText");
+        var fileItem = document.getElementById('profilePicture').files[0]; // Moved inside click listener
+        var fileName = fileItem ? fileItem.name : ''; // Check if fileItem is not null before accessing name
 
+        if (!fileItem) {
+            alert("No file selected!");
+            return;
+        }
+        
+        const storageReference = storageRef(storage, "images/" + fileName);
+        // Corrected reference for the database
+        const profileReference = ref(database, "profiles/");
+
+        uploadBytes(storageReference, fileItem).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                console.log('File available at', url);
+                // Pushing data to Firebase Realtime Database
+                var formData = {
+                    name: name,
+                    age: age,
+                    typeOfTraveler: typeOfTraveler,
+                    purpose: purpose,
+                    profilePictureUrl: url
+                }
+                set(push(profileReference), formData)
+                .then(() => {
+                    console.log("Profile saved successfully.");
+                    // Optional: Provide user feedback or redirection here
+                })
+                .catch((error) => {
+                    console.error("Data could not be saved." + error);
+                });
+            });
+        }).catch((error) => {
+            console.error("Upload failed:", error);
+        });
+    });
 </script>
-
